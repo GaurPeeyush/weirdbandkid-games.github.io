@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>D.E.S.RP FiveM Server Status</title>
+  <link rel="shortcut icon" type="image/jpg" href="https://weirdbandkid.github.io/cdn/img/weirdbandkid.jpg"/>
+  <meta name="description" content="A developer coding in JavaScript.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="//js.honeybadger.io/v3.2/honeybadger.min.js" type="text/javascript"></script>
+<script type='text/javascript' src="https://knockoutjs.com/downloads/knockout-2.2.1.js"></script>
+<script type='text/javascript' src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type='text/javascript' onload="ping()"></script>  
+ 
+<script type="text/javascript">
+  Honeybadger.configure({
+    apiKey: 'dbbf9231',
+    environment: 'production'
+  });
+</script>
+ 
+  
+  <!-- meta tags -->
+  <meta itemprop="name" content="weirdbandkid">
+  <meta itemprop="description" content="A developer coding in JavaScript.">
+  <meta property="og:url" content="weirdbandkid.games">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="weirdbandkid">
+  <meta property="og:description" content="A developer coding in JavaScript.">
+  <meta property="og:image" content="https://weirdbandkid.github.io/cdn/img/weirdbandkid.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="hflem_5_band">
+
+<script src="https://kit.fontawesome.com/7cf1aca7fb.js" crossorigin="anonymous"></script><link rel="stylesheet" href="https://weirdbandkid.github.io/cdn/style.css">
+
+</head>
+<body>
+<div class="full" id="rainbow" class=""><div class="rainbow"></div></div>
+<div class="nav big" id="nav">
+  <div class="header big" id="header">
+    <div class="name2"><span></span>
+        <!--  -->
+        <script>
+            $( document ).ready(function() { 
+                function ping(ip, callback) {
+                /** DO NOT CHANGE ANYTHING HERE **/
+                    if (!this.inUse) {
+                        this.status = 'unchecked';
+                        this.inUse = true;
+                        this.callback = callback;
+                        this.ip = ip;
+                        var _that = this;
+                        this.img = new Image();
+                        this.img.onload = function () {
+                            _that.inUse = false;
+                            _that.callback('Server Is Online');
+                
+                        };
+                        this.img.onerror = function (e) {
+                            if (_that.inUse) {
+                                _that.inUse = false;
+                                _that.callback('Online', e);
+                            }
+                
+                        };
+                        this.start = new Date().getTime();
+                        this.img.src = "https://" + ip;
+                        this.timer = setTimeout(function () {
+                            if (_that.inUse) {
+                                _that.inUse = false;
+                                _that.callback('Offline');
+                            }
+                        }, 1500);
+                    }
+                }
+                var PingModel = function (servers) {
+                    var self = this;
+                    var myServers = [];
+                    ko.utils.arrayForEach(servers, function (location) {
+                        myServers.push({
+                            name: location,
+                            status: ko.observable('unchecked')
+                        });
+                    });
+                    self.servers = ko.observableArray(myServers);
+                    ko.utils.arrayForEach(self.servers(), function (s) {
+                        s.status('checking');
+                        new ping(s.name, function (status, e) {
+                            s.status(status);
+                        });
+                    });
+                };
+                /** Update the below line to your desired server location // if you have setup DNS for your server you can have example.com:portnumber  NOTE: PORT NUMBER FOR WEB ADMIN**/
+                var komodel = new PingModel(['fivem.desrp.com:30121'
+                  
+                    ]);
+                ko.applyBindings(komodel);
+                
+                
+                        console.log( "Server Ping Completed." );
+                    });
+                 
+                    $( window ).on( "load", function() {
+                        console.log( "Server Ping Completed // Window Loaded 100%" );
+                    });
+                
+                </script>
+            <div data-bind="foreach:servers">
+                <span>Server is </span><span data-bind="text:status,css:status"></span>
+
+  </div>
+</div>
+</body>
+</html>
